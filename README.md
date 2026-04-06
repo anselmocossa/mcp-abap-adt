@@ -8,6 +8,8 @@ This project provides a server that allows you to interact with SAP ABAP systems
   <img width="380" height="200" src="https://glama.ai/mcp/servers/gwkh12xlu7/badge" alt="ABAP ADT MCP server" />
 </a>
 
+**Fork improvements:** CLI (`sap` command) for terminal usage + `GetTableContents` using native ADT endpoint (no custom Z service needed).
+
 This guide is designed for beginners, so we'll walk through everything step-by-step.  We'll cover:
 
 1.  **Prerequisites:** What you need before you start.
@@ -27,7 +29,7 @@ Before you begin, you'll need a few things:
     *   The SAP client number (e.g., `100`).
     *   Ensure that your SAP system allows connections via ADT (ABAP Development Tools). This usually involves making sure the necessary services are activated in transaction `SICF`.  Your basis administrator can help with this. Specifically, you will need the following services to be active:
         * `/sap/bc/adt`
-    *   For the `GetTableContents` Tool, you will need the implementation of a custom service `/z_mcp_abap_adt/z_tablecontent`. You can follow this guide [here](https://community.sap.com/t5/application-development-blog-posts/how-to-use-rfc-read-table-from-javascript-via-webservice/ba-p/13172358)
+    *   ~~For the `GetTableContents` Tool, you will need the implementation of a custom service.~~ **Fork improvement:** `GetTableContents` now uses the native ADT `/sap/bc/adt/datapreview/ddic` endpoint — no custom Z service needed.
 
 *   **Git (or GitHub Desktop):**  We'll use Git to download the project code.  You have two options:
     *   **Git:**  The command-line tool.  [Download Git](https://git-scm.com/downloads).  Choose the version for your operating system (Windows, macOS, Linux). Follow the installation instructions.
@@ -211,3 +213,44 @@ This server provides the following tools, which can be used through Cline (or an
 | `SearchObject`      | Search for ABAP objects using quick search.       | `query` (string), `maxResults` (number, optional, default 100)     | `@tool SearchObject query=ZMY* maxResults=20`              |
 | `GetInterface`      | Retrieve ABAP interface source code.              | `interface_name` (string): Name of the ABAP interface.             | `@tool GetInterface interface_name=ZIF_MY_INTERFACE`       |
 | `GetTransaction`    | Retrieve ABAP transaction details.                | `transaction_name` (string): Name of the ABAP transaction.         | `@tool GetTransaction transaction_name=ZMY_TRANSACTION`    |
+
+## 7. CLI Usage (Fork Addition)
+
+After building, link the CLI globally:
+
+```bash
+npm link
+```
+
+Then use the `sap` command in the terminal:
+
+```bash
+# Search for objects
+sap search "ZENH*" --max 20
+
+# Transaction details
+sap transaction SU01
+
+# Table structure
+sap table USR02
+
+# Table contents (read data)
+sap contents USR02 --rows 10
+
+# ABAP program source code
+sap program RSUSR002
+
+# Class source code
+sap class CL_GUI_ALV_GRID
+
+# Function module
+sap function BAPI_USER_GET_DETAIL SYST
+
+# Structure
+sap structure BAPIRET2
+
+# Package details
+sap package SUSR
+```
+
+> **Note:** The CLI is read-only by design — it cannot modify SAP data.
