@@ -2,6 +2,10 @@
   "name": "@orchestraight.co/mcp-abap-adt",
   "version": "1.1.0",
   "main": "index.js",
+  "bin": {
+    "sap": "./dist/cli.js",
+    "mcp-abap-adt": "./dist/index.js"
+  },
   "scripts": {
     "test": "jest",
     "build": "tsc -p tsconfig.json",
