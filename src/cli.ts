@@ -23,6 +23,51 @@ function extractText(result: { content?: { text?: string }[] }): string {
   return JSON.stringify(result, null, 2);
 }
 
+function formatXml(xml: string, cmd: string): string {
+  // Transaction
+  if (cmd === 'transaction') {
+    const name = xml.match(/name="([^"]+)"/)?.[1] || '?';
+    const text = xml.match(/text="([^"]+)"/)?.[1] || '?';
+    const pkg = xml.match(/package="([^"]+)"/)?.[1] || '?';
+    const appLines: string[] = [];
+    const appRegex = /facet="APPL"[^>]*name="([^"]+)"[^>]*displayName="([^"]+)"[^>]*text="([^"]+)"/g;
+    let m;
+    while ((m = appRegex.exec(xml)) !== null) appLines.push(`  ${m[2]} — ${m[3]}`);
+    return `\nTransaccao: ${name}\nDescricao:  ${text}\nPacote:     ${pkg}\n\nComponente aplicacao:\n${appLines.join('\n')}`;
+  }
+
+  // Table structure
+  if (cmd === 'table') {
+    const fields: string[] = [];
+    const fieldRegex = /<field[^>]*name="([^"]*)"[^>]*type="([^"]*)"[^>]*description="([^"]*)"/g;
+    let m;
+    while ((m = fieldRegex.exec(xml)) !== null) fields.push(`  ${m[1].padEnd(25)} ${m[2].padEnd(15)} ${m[3]}`);
+    if (fields.length) {
+      return `\n${'Campo'.padEnd(25)} ${'Tipo'.padEnd(15)} Descricao\n${'─'.repeat(70)}\n${fields.join('\n')}`;
+    }
+    // Fallback: try ADT format
+    const cols: string[] = [];
+    const colRegex = /adtcore:name="([^"]+)"[^>]*adtcore:type="([^"]*)"/g;
+    while ((m = colRegex.exec(xml)) !== null) cols.push(`  ${m[1].padEnd(30)} ${m[2]}`);
+    if (cols.length) return `\n${'Nome'.padEnd(30)} Tipo\n${'─'.repeat(50)}\n${cols.join('\n')}`;
+  }
+
+  // Search results
+  if (cmd === 'search') {
+    const results: string[] = [];
+    const objRegex = /name="([^"]+)"[^>]*description="([^"]*)"[^>]*type="([^"]*)"/g;
+    let m;
+    while ((m = objRegex.exec(xml)) !== null) results.push(`  ${m[1].padEnd(35)} ${m[3].padEnd(15)} ${m[2]}`);
+    if (results.length) return `\nResultados: ${results.length}\n\n${'Nome'.padEnd(35)} ${'Tipo'.padEnd(15)} Descricao\n${'─'.repeat(70)}\n${results.join('\n')}`;
+  }
+
+  // If not XML or no special formatting, return as-is
+  if (!xml.startsWith('<?xml') && !xml.startsWith('<')) return xml;
+
+  // Generic: strip XML tags for readability
+  return xml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
 function help() {
   console.log(`
 sap - SAP S/4HANA CLI (via ADT API)
@@ -126,7 +171,8 @@ async function main() {
         process.exit(1);
     }
 
-    console.log(extractText(result as { content?: { text?: string }[] }));
+    const text = extractText(result as { content?: { text?: string }[] });
+    console.log(formatXml(text, cmd));
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e);
     console.error(`Erro: ${msg}`);
