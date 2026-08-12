@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Added the read-only `sap` command-line interface for using ABAP ADT directly from a terminal.
+- Added CLI commands for repository search, transactions, table definitions and contents, programs, classes, function modules, structures, packages, includes, type information, and interfaces.
+
+### Changed
+
+- Changed `GetTableContents` to use the native ADT `/sap/bc/adt/datapreview/ddic` endpoint, removing the need for a custom Z service.
+- Improved CLI output formatting so XML responses for searches, transactions, tables, and other development objects are easier to read.
+
+### Documentation
+
+- Redesigned the README introduction with new MCP ABAP ADT artwork, project badges, a concise feature overview, and a quick-start guide.
+- Updated clone and repository links to point to `anselmocossa/mcp-abap-adt`.
+- Added clear attribution to the original project and documented the improvements provided by this fork.
+- Removed upstream Smithery links that redirected visitors away from this repository.
+
 ## [1.1.0] - 2025-02-19
 
 ### Added
