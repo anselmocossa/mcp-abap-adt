@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/anselmocossa/mcp-abap-adt/blob/main/package.json"><img src="https://img.shields.io/badge/version-1.1.0-22c55e.svg" alt="Version 1.1.0" /></a>
+  <a href="https://github.com/anselmocossa/mcp-abap-adt/blob/main/package.json"><img src="https://img.shields.io/badge/version-1.2.0-22c55e.svg" alt="Version 1.2.0" /></a>
   <a href="https://github.com/anselmocossa/mcp-abap-adt/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License" /></a>
   <a href="https://github.com/anselmocossa/mcp-abap-adt"><img src="https://img.shields.io/badge/status-open%20source-0ea5e9.svg" alt="Open source" /></a>
 </p>
