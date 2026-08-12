@@ -11,7 +11,6 @@
 <p align="center">
   <a href="https://github.com/anselmocossa/mcp-abap-adt/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License" /></a>
   <a href="https://github.com/anselmocossa/mcp-abap-adt"><img src="https://img.shields.io/badge/status-open%20source-0ea5e9.svg" alt="Open source" /></a>
-  <a href="https://smithery.ai/server/@mario-andreschak/mcp-abap-adt"><img src="https://smithery.ai/badge/@mario-andreschak/mcp-abap-adt" alt="Smithery" /></a>
 </p>
 
 MCP ABAP ADT is a read-only bridge between MCP-compatible AI tools and an SAP ABAP system. It uses standard ABAP Development Tools (ADT) services to retrieve source code, inspect development objects, search the repository, and preview table data without changing SAP business data.
@@ -95,14 +94,6 @@ Before you begin, you'll need a few things:
 ## 2. Installation and Setup
 
 Now, let's get the project code and set it up:
-
-### Installing via Smithery
-
-To install MCP ABAP Development Tools Server for Cline automatically via [Smithery](https://smithery.ai/server/@mario-andreschak/mcp-abap-adt):
-
-```bash
-npx -y @smithery/cli install @mario-andreschak/mcp-abap-adt --client cline
-```
 
 ### Manual Installation
 1.  **Clone the Repository:**
