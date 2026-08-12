@@ -1,16 +1,64 @@
-# mcp-abap-adt: Your Gateway to ABAP Development Tools (ADT)
+# MCP ABAP ADT
 
-[![smithery badge](https://smithery.ai/badge/@mario-andreschak/mcp-abap-adt)](https://smithery.ai/server/@mario-andreschak/mcp-abap-adt)
+<p align="center">
+  <img src="docs/images/mcp-abap-adt.png" alt="MCP ABAP ADT — AI meets enterprise development" width="900" />
+</p>
 
-This project provides a server that allows you to interact with SAP ABAP systems using the Model Context Protocol (MCP).  Think of it as a bridge that lets tools like [Cline](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev) (a VS Code extension) talk to your ABAP system and retrieve information like source code, table structures, and more.  It's like having a remote control for your ABAP development environment!
+<p align="center">
+  <strong>Connect AI assistants and terminal workflows to SAP ABAP Development Tools through the Model Context Protocol.</strong>
+</p>
 
-<a href="https://glama.ai/mcp/servers/gwkh12xlu7">
-  <img width="380" height="200" src="https://glama.ai/mcp/servers/gwkh12xlu7/badge" alt="ABAP ADT MCP server" />
-</a>
+<p align="center">
+  <a href="https://github.com/anselmocossa/mcp-abap-adt/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License" /></a>
+  <a href="https://github.com/anselmocossa/mcp-abap-adt"><img src="https://img.shields.io/badge/status-open%20source-0ea5e9.svg" alt="Open source" /></a>
+  <a href="https://smithery.ai/server/@mario-andreschak/mcp-abap-adt"><img src="https://smithery.ai/badge/@mario-andreschak/mcp-abap-adt" alt="Smithery" /></a>
+</p>
 
-**Fork improvements:** CLI (`sap` command) for terminal usage + `GetTableContents` using native ADT endpoint (no custom Z service needed).
+MCP ABAP ADT is a read-only bridge between MCP-compatible AI tools and an SAP ABAP system. It uses standard ABAP Development Tools (ADT) services to retrieve source code, inspect development objects, search the repository, and preview table data without changing SAP business data.
 
-This guide is designed for beginners, so we'll walk through everything step-by-step.  We'll cover:
+Use it from an MCP client such as Cline, or work directly from your terminal with the included `sap` command.
+
+> [!NOTE]
+> This repository is a fork of [mario-andreschak/mcp-abap-adt](https://github.com/mario-andreschak/mcp-abap-adt). It preserves the original MCP server and adds a terminal CLI, readable output, and native ADT table previews. Thanks to Mario Andreschak and the original contributors for the foundation.
+
+## Why this fork?
+
+- **Terminal-first workflow** — use the `sap` command without opening an MCP client.
+- **Native table previews** — `GetTableContents` uses `/sap/bc/adt/datapreview/ddic`; no custom Z service is required.
+- **Readable results** — XML responses for searches, transactions, tables, and other objects are formatted for humans.
+- **Broad ABAP coverage** — inspect programs, classes, interfaces, function modules, structures, tables, packages, includes, and transactions.
+- **Read-only by design** — explore development context without commands that modify SAP data.
+- **Open and extensible** — use the MCP server from compatible AI clients or extend the TypeScript implementation for your workflow.
+
+## Quick start
+
+```bash
+git clone https://github.com/anselmocossa/mcp-abap-adt.git
+cd mcp-abap-adt
+npm install
+npm run build
+cp .env.example .env
+```
+
+Add your SAP connection details to `.env`, then start the MCP server:
+
+```bash
+npm start
+```
+
+Or link the CLI and query SAP directly from the terminal:
+
+```bash
+npm link
+sap search "Z*" --max 20
+sap transaction SU01
+sap table USR02
+sap contents USR02 --rows 10
+```
+
+## What this guide covers
+
+This guide is designed for beginners and walks through:
 
 1.  **Prerequisites:** What you need before you start.
 2.  **Installation and Setup:**  Getting everything up and running.
@@ -66,11 +114,11 @@ npx -y @smithery/cli install @mario-andreschak/mcp-abap-adt --client cline
             ```
         3.  Clone the repository:
             ```bash
-            git clone https://github.com/mario-andreschak/mcp-abap-adt
+            git clone https://github.com/anselmocossa/mcp-abap-adt.git
             ```
         4.  Change into the project directory:
             ```bash
-            cd mcp-abap-adt  # Or whatever the folder name is
+            cd mcp-abap-adt
             ```
     *   **Using GitHub Desktop:**
         1.  Open GitHub Desktop.
@@ -105,7 +153,7 @@ npx -y @smithery/cli install @mario-andreschak/mcp-abap-adt --client cline
 
 ## 3. Running the Server
 
-To be fair, you usually dont usually "run" this server on it's own. It is supposed to be integrated into an MCP Client like Cline or Claude Desktop. But you *can* manually run the server in two main ways:
+The server is normally launched by an MCP client such as Cline or Claude Desktop. You can also run it directly for validation or development:
 
 *   **Standalone Mode:**  This runs the server directly, and it will output messages to the terminal. The server will start and wait for client connections, so potentially rendering it useless except to see if it starts.
 *   **Development/Debug Mode:** This runs the server with the MCP Inspector. You can open the URL that it outputs in your browser and start playing around.
